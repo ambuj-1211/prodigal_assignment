@@ -8,7 +8,7 @@ from langchain_groq import ChatGroq
 from langchain.prompts import PromptTemplate
 # from langchain.chains import LLMChain
 from dotenv import load_dotenv
-
+from predictor import CallAnalysisPredictor
 # Load environment variables from .env file
 load_dotenv()
 
@@ -182,6 +182,21 @@ def analyze_with_llm(conversation_text, entity, api_key):
     except Exception as e:
         st.error(f"An error occurred with the LLM API: {e}")
         return None
+    
+def analyze_with_ml_model(conversation_data, entity):
+    predictor = CallAnalysisPredictor()
+    predictor.load_models()
+    conversation_json = json.dumps(conversation_data, ensure_ascii=False)
+    if entity == "Profanity Detection":
+        profanity_result = predictor.predict_profanity(conversation_json)
+        if profanity_result == "found":
+            profanity_result="Found"
+        return profanity_result
+    if entity == "Privacy and Compliance Violation":
+        sensitive_result = predictor.predict_sensitive_data(conversation_json)
+        if sensitive_result == "found":
+            sensitive_result="Found"
+        return sensitive_result
 
 # --- Streamlit App UI ---
 
@@ -260,8 +275,10 @@ if analyze_button:
                     result = analyze_with_llm(conversation_string, entity, groq_api_key)
             
             elif approach == "Machine Learning":
-                st.info("The Machine Learning model feature is currently under development.")
-                result = "Not Implemented"
+                # st.info("The Machine Learning model feature is currently under development.")
+                with st.spinner("Analyze with the ml model approach..."):
+                    result = analyze_with_ml_model(conversation_data, entity)
+                # result = "Not Implemented"
 
             if result:
                 st.success(f"**Result:** {entity}: **{result}**")
