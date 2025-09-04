@@ -1,24 +1,113 @@
-## Setup:
-1. Configure conda in your environment for creating virtual environment, if you have any other method follow that.
-2. If not using conda directly jump to step 5.
-3. create environment using `conda env create -f environment.yaml`
-4. activate environment using `conda activate prodigal_venv`
-5. after activating the environment use pip to download dependencies `pip install -r requirements.txt`
-6. create .env file and add the following to it `GROQ_API_KEY="Your_API_Key_here"`
-7. get your groq api key from the groq dashboard.
-8. Run the code using `streamlit run app.py` for the main app.
-9. `streamlit run visualize_app.py` for the visualization app.
----
+# Call Analysis Application
 
-### Example json to upload 
-- [📥 Download Sample Call Data from here](https://github.com/ambuj-1211/prodigal_assignment/blob/master/All_Conversations/0b6979e4-8c05-49e1-b7a7-94d85a627df5.json)
-### Deployed main application
-- [Click here to see the deployed main application.](https://callanalysis-app.streamlit.app/)
-### Deployed visualization application
-- [Click here to see the deployed visualizer application.](https://callvisualizer-app.streamlit.app/)
----
+A comprehensive call analysis system that detects profanity and sensitive data violations in customer service conversations using machine learning models.
 
-### The yaml file was not provided only the json files were there so I assumed the structure of yaml to be the following:
+## 🚀 Features
+
+- **Profanity Detection**: Identifies inappropriate language in conversations
+- **Sensitive Data Detection**: Detects potential violations of sensitive information sharing
+- **Approach Selection**: You have the ability to select the approach for flagging the entity.
+- **Interactive Web Interface**: User-friendly Streamlit applications
+- **Data Visualization**: Comprehensive analytics and insights
+- **Multi-format Support**: Accepts both JSON and YAML conversation files
+
+## 📁 Project Structure
+
+```
+prodigal_assignment/
+├── 📁 ml_model/                    # Machine Learning Models
+│   ├── __init__.py
+│   ├── predictor.py               # Main prediction logic
+│   ├── create_labelled_data.py   # Data preprocessing utilities
+│   └── ml_model.ipynb            # Jupyter notebook for model training
+│   └── profanity_model.pkl       # saved model for profanity check
+|   └── sensitive_model.h5        # saved model for sensitive_model check
+|   └── sensitive_vectorizer.pkl  # saved model for sensitive data vectors
+|
+├── 📁 streamlit_applications/     # Streamlit Web Applications
+│   ├── app.py                    # Main call analysis application
+│   └── visualize_app.py         # Data visualization dashboard
+│
+├── 📁 All_Conversations/         # Conversation data
+│   └── *.json                   # Json format conversation files
+│
+├── 📄 Configuration Files (Root directory)
+│   ├── requirements.txt         # Python dependencies
+│   ├── environment.yaml        # Conda environment configuration
+│   └── labeled_conversations.csv # Training dataset
+│
+└── 📄 Documentation
+    └── README.md               # Readme to understand codebase
+```
+
+## 🤖 Machine Learning Models
+
+### Model Files Description
+
+- **`profanity_model.pkl`**: Pickled Random Forest classifier trained to detect profanity and inappropriate language in conversations
+- **`sensitive_model.h5`**: TensorFlow/Keras neural network model for detecting sensitive data violations (account numbers, personal information, etc.)
+- **`sensitive_vectorizer.pkl`**: TF-IDF vectorizer used to transform text for the sensitive data detection model
+
+### Training Process
+
+The models were trained using the Jupyter notebook `ml_model/ml_model.ipynb`, which includes:
+- Data preprocessing and cleaning
+- Feature engineering with TF-IDF vectorization
+- Model training and validation
+- Performance evaluation and metrics
+- Model serialization for deployment
+
+## 🛠️ Setup Instructions
+
+### Prerequisites
+- Python 3.8 or higher
+- Conda (recommended) or pip
+
+### Installation Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd prodigal_assignment
+   ```
+
+2. **Create and activate conda environment** (recommended)
+   ```bash
+   conda env create -f environment.yaml
+   conda activate prodigal_venv
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure environment variables**
+   - Create a `.env` file in the root directory
+   - Add your Groq API key:
+     ```
+     GROQ_API_KEY="Your_API_Key_here"
+     ```
+   - Get your API key from the [Groq Dashboard](https://console.groq.com/)
+
+## 🚀 Running the Applications
+
+### Main Call Analysis Application
+```bash
+streamlit run streamlit_applications/app.py
+```
+
+### Data Visualization Dashboard
+```bash
+streamlit run streamlit_applications/visualize_app.py
+```
+
+## 📊 Sample Data
+
+### Example JSON Format
+Download a sample conversation file: [📥 Sample Call Data](https://github.com/ambuj-1211/prodigal_assignment/blob/master/All_Conversations/0b6979e4-8c05-49e1-b7a7-94d85a627df5.json)
+
+### Supported YAML Structure
 ```yaml
 transcript:
   - speaker: "Agent"
@@ -29,56 +118,37 @@ transcript:
     text: "Yes, this is Sarah. Who's calling?"
     stime: 5.2
     etime: 9
-  - speaker: "Agent"
-    text: "Hi Sarah, this is Mark from XYZ Collections. I hope you’re doing well today."
-    stime: 8
-    etime: 14
-  - speaker: "Customer"
-    text: "I'm fine, thanks. What is this about?"
-    stime: 14.2
-    etime: 18
-  - speaker: "Agent"
-    text: "I'm calling regarding your outstanding balance on your account with XYZ Bank. Can you confirm your account number so I can assist you?"
-    stime: 17
-    etime: 27
-  - speaker: "Customer"
-    text: "I don't have that information right now. Can you tell me the balance?"
-    stime: 27.5
-    etime: 31
-  - speaker: "Agent"
-    text: "Sure! Your current balance is $350. How would you like to proceed with this payment?"
-    stime: 30
-    etime: 40
-  - speaker: "Customer"
-    text: "I need some time to figure that out. Can I pay next week?"
-    stime: 39.2
-    etime: 45
-  - speaker: "Agent"
-    text: "Unfortunately, we do require payment arrangements to be made sooner. Could we set up a payment plan today?"
-    stime: 44
-    etime: 54
-  - speaker: "Customer"
-    text: "I really can't handle that right now. What are my options?"
-    stime: 53.5
-    etime: 58
-  - speaker: "Agent"
-    text: "We can arrange a payment plan that fits your schedule. I can share details about the payment options available."
-    stime: 57.5
-    etime: 67
-  - speaker: "Customer"
-    text: "Please go ahead, but I still need time to consider it."
-    stime: 66
-    etime: 70
-  - speaker: "Agent"
-    text: "Alright, I understand. Your balance remains $350 and we can split it into smaller payments if that helps."
-    stime: 69
-    etime: 79
-  - speaker: "Customer"
-    text: "Okay, I appreciate your help. I'll call back once I decide."
-    stime: 78.5
-    etime: 83
-  - speaker: "Agent"
-    text: "Thank you for your time, Sarah. I'll be here if you need further assistance."
-    stime: 82
-    etime: 88
+  # ... more conversation entries
 ```
+
+## 🌐 Deployed Applications
+
+- **Main Application**: [Call Analysis App](https://callanalysis-app.streamlit.app/)
+- **Visualization Dashboard**: [Call Visualizer App](https://callvisualizer-app.streamlit.app/)
+
+## 🔧 Technical Details
+
+### Dependencies
+- **Streamlit**: Web application framework
+- **TensorFlow**: Deep learning for sensitive data detection
+- **Scikit-learn**: Machine learning for profanity detection
+- **LangChain**: AI-powered conversation analysis
+- **Pandas & NumPy**: Data manipulation and analysis
+
+### Model Performance
+- **Profanity Detection**: Random Forest classifier with TF-IDF features
+- **Sensitive Data Detection**: Neural network with custom architecture
+- **Text Preprocessing**: Comprehensive cleaning and normalization
+
+## 📝 Usage
+
+1. **Upload Conversation**: Use the file upload feature or paste JSON/YAML content
+2. **Analysis**: The system automatically processes the conversation
+3. **Results**: View detailed analysis including:
+   - Profanity detection results
+   - Sensitive data violation alerts
+   - Conversation insights and metrics
+
+---
+
+**Note**: The YAML structure shown above is the assumed format since only JSON files were provided in the original dataset. The application supports both formats for maximum compatibility.

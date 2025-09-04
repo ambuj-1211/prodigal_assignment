@@ -1,9 +1,10 @@
-import os
-import json
 import csv
+import json
+import os
+import time
+
 import openai
 from dotenv import load_dotenv
-import time
 
 # --- 1. SETUP ---
 # Load environment variables from the .env file (for the OpenAI API key)
@@ -11,8 +12,8 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Define the folder containing the JSON files and the output CSV file name
-CONVERSATIONS_DIR = "All_Conversations"
-OUTPUT_CSV_FILE = "labeled_conversations.csv"
+CONVERSATIONS_DIR = "/home/ambuj/projects/prodigal_assignment/All_Conversations"
+OUTPUT_CSV_FILE = "../labeled_conversations.csv"
 
 # --- 2. HELPER FUNCTIONS ---
 

@@ -1,14 +1,24 @@
+import json
+import os
+import re
+import sys
+from pathlib import Path
+
+# Add the parent directory to Python path to import ml_model
+current_dir = Path(__file__).parent
+parent_dir = current_dir.parent
+sys.path.append(str(parent_dir))
+
 import streamlit as st
 import yaml
-import json
-import re
-import os
-from langchain_core.output_parsers import StrOutputParser
-from langchain_groq import ChatGroq
-from langchain.prompts import PromptTemplate
 # from langchain.chains import LLMChain
 from dotenv import load_dotenv
-from predictor import CallAnalysisPredictor
+from langchain.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_groq import ChatGroq
+
+from ml_model.predictor import CallAnalysisPredictor
+
 # Load environment variables from .env file
 load_dotenv()
 

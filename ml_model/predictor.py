@@ -1,19 +1,21 @@
-import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
-from sklearn.preprocessing import LabelEncoder
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.optimizers import Adam
-import pandas as pd
-import numpy as np
 import json
-import re
 import pickle
+import re
+
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (accuracy_score, classification_report,
+                             confusion_matrix)
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam
+
 
 class CallAnalysisPredictor:
     """
@@ -29,13 +31,13 @@ class CallAnalysisPredictor:
         Load trained models
         """
         # Load profanity model
-        with open('profanity_model.pkl', 'rb') as f:
+        with open('ml_model/profanity_model.pkl', 'rb') as f:
             self.profanity_components = pickle.load(f)
         
         # Load sensitive data model
-        self.sensitive_model = tf.keras.models.load_model('sensitive_model.h5')
+        self.sensitive_model = tf.keras.models.load_model('ml_model/sensitive_model.h5')
         
-        with open('sensitive_vectorizer.pkl', 'rb') as f:
+        with open('ml_model/sensitive_vectorizer.pkl', 'rb') as f:
             self.sensitive_vectorizer = pickle.load(f)
     
     def preprocess_json_input(self, json_string):
