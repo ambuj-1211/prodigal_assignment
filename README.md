@@ -123,8 +123,8 @@ transcript:
 
 ## 🌐 Deployed Applications
 
-- **Main Application**: [Call Analysis App](https://callanalysis-app.streamlit.app/)
-- **Visualization Dashboard**: [Call Visualizer App](https://callvisualizer-app.streamlit.app/)
+- **Main Application**: [Call Analysis App](https://callanalysisapp-latest.streamlit.app/)
+- **Visualization Dashboard**: [Call Visualizer App](https://visualizationapp-latest.streamlit.app/)
 
 ## 🔧 Technical Details
 
